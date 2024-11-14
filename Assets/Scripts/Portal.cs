@@ -1,56 +1,60 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Portal : MonoBehaviour
 {
     [SerializeField] float speed;
     [SerializeField] float rotateSpeed;
 
-    Vector3 newPosition;
-
+    Vector2 newPosition;
+    // Start is called before the first frame update
     void Start()
     {
+        // Inisialisasi nilai newPosition menggunakan ChangePosition()
         ChangePosition();
     }
 
+    // Update is called once per frame
     void Update()
     {
-        // Cek jarak posisi dan update posisi baru jika mendekati batas
+        WeaponPickup weaponPickup = Player.Instance.GetComponentInChildren<WeaponPickup>();
+
+        if (GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Weapon>() != null)        {
+            GetComponent<SpriteRenderer>().enabled = true;
+            GetComponent<Collider2D>().enabled = true;
+        }
+
+        else
+        {
+            GetComponent<SpriteRenderer>().enabled = false;
+            GetComponent<Collider2D>().enabled = false;
+        }
+
+        transform.Rotate(0, 0, rotateSpeed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, newPosition, speed * Time.deltaTime);
+
+        // Check if the asteroid is close enough to the target position
         if (Vector2.Distance(transform.position, newPosition) < 0.5f)
         {
             ChangePosition();
         }
-
-        // Tampilkan portal hanya jika player memiliki senjata
-        bool playerHasWeapon = WeaponPickup.hasWeapon;
-        GetComponent<SpriteRenderer>().enabled = playerHasWeapon;
-        GetComponent<Collider2D>().enabled = playerHasWeapon;
-
-        // Gerakan asteroid ke arah newPosition
-        transform.position = Vector3.MoveTowards(transform.position, newPosition, speed * Time.deltaTime);
-        transform.Rotate(Vector3.forward * rotateSpeed * Time.deltaTime);
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player") && WeaponPickup.hasWeapon)
+        // Check if the asteroid collides with the player
+        if (other.CompareTag("Player"))
         {
-            if (GameManager.LevelManager != null)
-            {
-                GameManager.LevelManager.StartTransition(true);
-            }
-            else
-            {
-                Debug.LogError("LevelManager is null. Ensure it is initialized correctly.");
-            }
+            Debug.Log("Asteroid collided with the player. Loading Main scene.");
+            GameManager.Instance.LevelManager.LoadScene("Main");
         }
     }
 
     void ChangePosition()
     {
-        float x = Random.Range(-10f, 10f);
-        float y = Random.Range(-10f, 10f);
-        newPosition = new Vector3(x, y, transform.position.z);
+        // Set newPosition to a random position within a specific range (example)
+        newPosition = new Vector2(Random.Range(-10f, 10f), Random.Range(-8f, 8f));
     }
 }

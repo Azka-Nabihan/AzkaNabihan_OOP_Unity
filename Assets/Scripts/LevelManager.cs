@@ -9,38 +9,33 @@ public class LevelManager : MonoBehaviour
 
     void Awake()
     {
-        if (animator == null)
-        {
-            animator = GameObject.Find("SceneTransition").GetComponent<Animator>();
-        }
+        animator.enabled = false;
     }
 
-    public void StartTransition(bool hitPortal)
+    IEnumerator LoadSceneAsync(string sceneName)
     {
-        if (hitPortal)
-        {
-            animator.SetTrigger("StartTransition");
-            Debug.Log("Animasi transisi dimulai.");
-        }
-    }
+        // Aktifkan animator dan mainkan animasi StartTransition
+        animator.enabled = true;
 
-    public void OnTransitionComplete()
-    {
-        Debug.Log("Transisi selesai, memuat scene 'Main'.");
-        LoadScene("Main");
-    }
+        // Tunggu hingga animasi StartTransition selesai
+        yield return new WaitForSeconds(1f); // Sesuaikan waktu ini dengan durasi animasi StartTransition
 
-    private void LoadScene(string sceneName)
-    {
-        StartCoroutine(LoadSceneAsync(sceneName));
-    }
+        // Memuat scene baru secara asinkron
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
 
-    private IEnumerator LoadSceneAsync(string sceneName)
-    { 
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
-        while (!operation.isDone)
+        // Tunggu hingga scene selesai dimuat
+        while (!asyncOperation.isDone)
         {
             yield return null;
         }
+        
+        // Mainkan animasi EndTransition
+        animator.SetTrigger("EndTransition");
+    }
+
+    // Fungsi publik untuk memulai transisi dan load scene
+    public void LoadScene(string sceneName)
+    {
+        StartCoroutine(LoadSceneAsync(sceneName));
     }
 }

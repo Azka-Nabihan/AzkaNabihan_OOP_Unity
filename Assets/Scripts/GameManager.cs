@@ -4,45 +4,27 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }  // Singleton Instance
-    public static LevelManager LevelManager { get; private set; }  // Level manager
-    
+    public static GameManager Instance { get; private set; }
 
-    void Awake(){
-        // Check if an Instance of GameManager already exists
+    public LevelManager LevelManager { get; private set; }
+
+    void Awake()
+    {
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject); // Destroy this Instance if one already exists
+            Destroy(this);
             return;
         }
 
-        Instance = this; // Set the singleton instance to this GameManager
-        DontDestroyOnLoad(gameObject); // Persist this GameManager across scenes
+        Instance = this;
 
-        // Initialize the LevelManager from child components
         LevelManager = GetComponentInChildren<LevelManager>();
 
-        LevelManager = FindObjectOfType<LevelManager>();
-        if (LevelManager == null)
+        DontDestroyOnLoad(gameObject);
+        var camera = GameObject.Find("MainCamera");
+        if (camera != null)
         {
-            Debug.LogError("LevelManager tidak ditemukan di scene.");
-        }
-        else
-        {
-            Debug.Log("LevelManager berhasil diinisialisasi.");
-        }
-
-        // Ensure that the Main Camera is preserved across scenes
-        GameObject mainCamera = GameObject.FindWithTag("Main Camera");
-        if (mainCamera != null)
-        {
-            DontDestroyOnLoad(mainCamera);
-        }
-
-         if (LevelManager == null)
-        {
-            Debug.LogError("LevelManager tidak ditemukan di GameManager. Pastikan LevelManager adalah child dari GameManager.");
+            DontDestroyOnLoad(camera);
         }
     }
 }
-
