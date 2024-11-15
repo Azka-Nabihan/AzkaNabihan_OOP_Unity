@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 7210587921700127769}
   - component: {fileID: 6490955098638994983}
   - component: {fileID: 7395831973727538559}
+  - component: {fileID: 8603393771252518007}
+  - component: {fileID: 3136047880483534113}
   m_Layer: 0
   m_Name: EnemyForward
   m_TagString: Untagged
@@ -173,3 +175,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level: 1
   speed: 3
+--- !u!114 &8603393771252518007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3800655569155242218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ba8b62650bece74cbd3f4c3e57a4209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+--- !u!114 &3136047880483534113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3800655569155242218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb3750adba1c0294b92829591f2ffaf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthComponent: {fileID: 0}

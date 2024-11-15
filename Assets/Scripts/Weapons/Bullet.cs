@@ -39,4 +39,22 @@ public class Bullet : MonoBehaviour
         objectPool.Release(this);
     }
     
+    // // Fungsi yang dipanggil ketika Bullet bertabrakan dengan objek lain
+    // void OnCollisionEnter2D(Collision2D collision)
+    // {
+    //     // Jika bullet menabrak musuh
+    //     if (collision.gameObject.CompareTag("Enemy"))
+    //     {
+    //         // Panggil fungsi untuk menghentikan dan mengembalikan bullet ke pool
+    //         Deactivate();
+    //     }
+    //     else if (collision.gameObject.CompareTag("Boundary"))
+    //     {
+    //         // Jika bullet keluar dari layar atau menabrak boundary
+    //         Deactivate();
+    //     }
+    // }
+
+    
+
 }

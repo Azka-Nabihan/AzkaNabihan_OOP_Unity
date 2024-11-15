@@ -30,6 +30,7 @@ public class HealthComponent : MonoBehaviour
         {
             health = 0;  // Pastikan health tidak negatif
             DestroyEntity();  // Panggil fungsi untuk menghancurkan objek
+            Debug.Log(gameObject.name + " has been destroyed!");
         }
     }
 
