@@ -3,30 +3,18 @@ using UnityEngine;
 
 public class InvincibilityComponent : MonoBehaviour
 {
-    #region Editor Settings
-    [Tooltip("Material to switch to during the flash")]
     [SerializeField] private Material blinkMaterial;  // Material untuk efek berkedip
-
-    [Tooltip("Duration of the flash.")]
     [SerializeField] private int blinkingCount = 7;   // Jumlah kedipan
     [SerializeField] private float blinkInterval = 0.1f;  // Interval kedipan
-    #endregion
 
-    #region Private Fields
-    // SpriteRenderer yang akan berkedip
-    private SpriteRenderer spriteRenderer;
-
-    // Material asli yang digunakan oleh SpriteRenderer
+    
+    private SpriteRenderer spriteRenderer;  // Material asli yang digunakan oleh SpriteRenderer
     private Material originalMaterial;
-
-    // Menyimpan Coroutine yang sedang berjalan
-    private Coroutine flashCoroutine;
 
     // Status invincibility
     public bool isInvincible = false;
-    #endregion
 
-    void Start()
+    void Awake()
     {
         // Ambil komponen SpriteRenderer yang ada pada GameObject ini
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -35,8 +23,16 @@ public class InvincibilityComponent : MonoBehaviour
         originalMaterial = spriteRenderer.material;
     }
 
+    public void TriggerInvincibility()
+    {
+        if (!isInvincible)
+        {
+            StartCoroutine(InvicibilityCoroutine());
+        }
+    }
+
     // Coroutine untuk efek berkedip
-    private IEnumerator FlashRoutine()
+    private IEnumerator InvicibilityCoroutine()
     {
         isInvincible = true;  // Set Entitas menjadi invincible selama efek berkedip
 
@@ -46,30 +42,18 @@ public class InvincibilityComponent : MonoBehaviour
             spriteRenderer.material = blinkMaterial;
 
             // Tunggu sesuai interval kedipan
-            yield return new WaitForSeconds(blinkInterval);
+            yield return new WaitForSeconds(blinkInterval / 2);
 
             // Kembalikan material ke asli
             spriteRenderer.material = originalMaterial;
 
             // Tunggu interval kedipan berikutnya
-            yield return new WaitForSeconds(blinkInterval);
+            yield return new WaitForSeconds(blinkInterval / 2);
         }
 
         // Setelah kedipan selesai, kembalikan ke kondisi normal
+        spriteRenderer.material = originalMaterial;
         isInvincible = false; // Set Entitas kembali ke kondisi rentan
-        flashCoroutine = null;  // Clear reference to the coroutine
     }
 
-    // Fungsi untuk memulai efek berkedip
-    public void Flash()
-    {
-        // Jika efek kedipan sudah berjalan, hentikan terlebih dahulu
-        if (flashCoroutine != null)
-        {
-            StopCoroutine(flashCoroutine);
-        }
-
-        // Mulai coroutine dengan efek berkedip
-        flashCoroutine = StartCoroutine(FlashRoutine());
-    }
 }

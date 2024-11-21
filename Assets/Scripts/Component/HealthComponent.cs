@@ -1,17 +1,18 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HealthComponent : MonoBehaviour
 {
     [Header("Health Settings")]
     [SerializeField]
-    private int maxHealth = 100;  // Maksimal nilai health yang bisa diatur di Inspector
-
+    private int maxHealth = 10;  // Maksimal nilai health yang bisa diatur di Inspector
     private int health;  // Nilai health saat ini
 
     // Getter untuk mendapatkan nilai health saat ini
-    public int Health
+    public int GetHealth()
     {
-        get { return health; }
+        return health;
     }
 
     private void Awake()
@@ -28,15 +29,8 @@ public class HealthComponent : MonoBehaviour
         // Cek jika health kurang dari atau sama dengan 0
         if (health <= 0)
         {
-            health = 0;  // Pastikan health tidak negatif
-            DestroyEntity();  // Panggil fungsi untuk menghancurkan objek
+            Destroy(gameObject);  // Hancurkan objek ini dari scene
             Debug.Log(gameObject.name + " has been destroyed!");
         }
-    }
-
-    // Method untuk menghancurkan objek
-    private void DestroyEntity()
-    {
-        Destroy(gameObject);  // Hancurkan objek ini dari scene
     }
 }

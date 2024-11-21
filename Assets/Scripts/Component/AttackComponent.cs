@@ -7,6 +7,7 @@ public class AttackComponent : MonoBehaviour
     [SerializeField] private Bullet bulletPrefab;  // Prefab Bullet yang akan digunakan (opsional)
     [SerializeField] private int damage = 10;      // Nilai damage yang diberikan
 
+    // tidak terlalu diperlukan jika "Is Trigger" di kommponen Collider2D sudah diaktifkan
     private void Awake()
     {
         // Pastikan Collider2D adalah trigger
@@ -19,18 +20,28 @@ public class AttackComponent : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Cek apakah objek yang bertabrakan memiliki tag yang sama
-        if (other.CompareTag(gameObject.tag))
-        {
-            return;  // Jika tag sama, batalkan operasi
-        }
+        if (other.gameObject.CompareTag(gameObject.tag)) return;
 
         // Cek apakah objek yang bertabrakan memiliki HitboxComponent
-        HitboxComponent hitbox = other.GetComponent<HitboxComponent>();
-        if (hitbox != null)
+        if (other.GetComponent<HitboxComponent>() != null)
         {
-            // Jika ada HitboxComponent, berikan damage
-            hitbox.Damage(damage);
+            // 
+            HitboxComponent hitbox = other.GetComponent<HitboxComponent>();
+
+            if (bulletPrefab != null)
+            {
+                hitbox.Damage(bulletPrefab.damage);   // Damage dari bullet
+            } else {
+                hitbox.Damage(damage);  // Damage dari attack component
+            }
+        }
+
+        if (other.GetComponent<InvincibilityComponent>() != null)
+        {
+            other.GetComponent<InvincibilityComponent>().TriggerInvincibility();
         }
     }
 }
+
+
+

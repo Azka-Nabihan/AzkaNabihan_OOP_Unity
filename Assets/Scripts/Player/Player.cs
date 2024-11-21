@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
 
     void LateUpdate()
     {
-        // Mengatur nilai Bool dari parameter IsMoving milik Animator sesuai dengan nilai return method IsMoving dari PlayerMovement
+        playerMovement.MoveBound();
         animator.SetBool("IsMoving", playerMovement.IsMoving());
     }
 }

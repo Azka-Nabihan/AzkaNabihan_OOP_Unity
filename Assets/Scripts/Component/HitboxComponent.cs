@@ -1,44 +1,35 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]  // Memastikan objek memiliki Collider2D
+[RequireComponent(typeof(Collider2D))]
 public class HitboxComponent : MonoBehaviour
 {
-    [Header("Health Reference")]
-    [SerializeField] 
-    private HealthComponent healthComponent;  // Referensi ke HealthComponent
+    [SerializeField]
+    HealthComponent health;
 
-    private void Awake()
+    Collider2D area;
+
+    private InvincibilityComponent invincibilityComponent;
+
+
+    void Start()
     {
-        // Jika healthComponent tidak diset di Inspector, coba cari HealthComponent pada objek ini
-        if (healthComponent == null)
-        {
-            healthComponent = GetComponent<HealthComponent>();
-
-            // Jika HealthComponent tetap tidak ditemukan, beri peringatan
-            if (healthComponent == null)
-            {
-                Debug.LogWarning("HealthComponent tidak ditemukan pada objek " + gameObject.name);
-            }
-        }
+        area = GetComponent<Collider2D>();
+        invincibilityComponent = GetComponent<InvincibilityComponent>();
     }
 
-    // Method Damage untuk menerima damage dari objek Bullet
     public void Damage(Bullet bullet)
     {
-        if (healthComponent != null)
-        {
-            // Mengurangi health menggunakan nilai damage dari bullet
-            healthComponent.Subtract(bullet.damage);
-        }
+        if (invincibilityComponent != null && invincibilityComponent.isInvincible) return;
+
+        if (health != null)
+            health.Subtract(bullet.damage);
     }
 
-    // Method Damage untuk menerima damage dalam bentuk integer
-    public void Damage(int damageAmount)
+    public void Damage(int damage)
     {
-        if (healthComponent != null)
-        {
-            // Mengurangi health dengan nilai damage yang diberikan
-            healthComponent.Subtract(damageAmount);
-        }
+        if (invincibilityComponent != null && invincibilityComponent.isInvincible) return;
+
+        if (health != null)
+            health.Subtract(damage);
     }
 }

@@ -7,54 +7,66 @@ public class Bullet : MonoBehaviour
 {
 
     [Header("Bullet Stats")]
-    public float bulletSpeed = 20;
+    [SerializeField]public float bulletSpeed = 10;
     public int damage = 10;
     private Rigidbody2D rb;
     
-    [SerializeField] private float timeoutDelay = 3f;
-    private IObjectPool<Bullet> objectPool;
-    
-   // Fungsi untuk mengatur referensi ObjectPool
-    public void SetObjectPool(IObjectPool<Bullet> pool)
+    public IObjectPool<Bullet> objectPool;
+
+    private void Awake()
     {
-        objectPool = pool;
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    // Fungsi untuk menonaktifkan bullet seteleah timeout
-    public void Deactivate()
-    {
-        StartCoroutine(DeactivateRoutine(timeoutDelay));
-    }
-
-    // Coroutine untuk mnunggu dan kemudia menonakttifkan bullet
-    IEnumerator DeactivateRoutine(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-
-        // reset rigidbody untuk mengehntikan pergerakan
-        Rigidbody2D rBody = GetComponent<Rigidbody2D>();
-        rBody.velocity = Vector2.zero;      // Hentikan gerakan
-
-        // release the projectile back to the pool
-        objectPool.Release(this);
-    }
-    
-    // // Fungsi yang dipanggil ketika Bullet bertabrakan dengan objek lain
-    // void OnCollisionEnter2D(Collision2D collision)
+    // private void FixedUpdate()
     // {
-    //     // Jika bullet menabrak musuh
-    //     if (collision.gameObject.CompareTag("Enemy"))
-    //     {
-    //         // Panggil fungsi untuk menghentikan dan mengembalikan bullet ke pool
-    //         Deactivate();
-    //     }
-    //     else if (collision.gameObject.CompareTag("Boundary"))
-    //     {
-    //         // Jika bullet keluar dari layar atau menabrak boundary
-    //         Deactivate();
-    //     }
+    //     rb.velocity = bulletSpeed * transform.up * Time.deltaTime;
     // }
 
+    private void Update()
+    {
+        Vector2 ppos = Camera.main.WorldToViewportPoint(transform.position);
+        
+        if (ppos.y >= 1.0f || ppos.y <= -0.01f && objectPool != null)
+        {
+            objectPool.Release(this);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            other.gameObject.GetComponent<HitboxComponent>().Damage(this);
+            objectPool.Release(this);
+        }
+    }
+    
+//    // Fungsi untuk mengatur referensi ObjectPool
+//     public void SetObjectPool(IObjectPool<Bullet> pool)
+//     {
+//         objectPool = pool;
+//     }
+
+//     // Fungsi untuk menonaktifkan bullet seteleah timeout
+//     public void Deactivate()
+//     {
+//         StartCoroutine(DeactivateRoutine(timeoutDelay));
+//     }
+
+//     // Coroutine untuk mnunggu dan kemudia menonakttifkan bullet
+//     IEnumerator DeactivateRoutine(float delay)
+//     {
+//         yield return new WaitForSeconds(delay);
+
+//         // reset rigidbody untuk mengehntikan pergerakan
+//         Rigidbody2D rBody = GetComponent<Rigidbody2D>();
+//         rBody.velocity = Vector2.zero;      // Hentikan gerakan
+
+//         // release the projectile back to the pool
+//         objectPool.Release(this);
+//     }
     
 
+    
 }
