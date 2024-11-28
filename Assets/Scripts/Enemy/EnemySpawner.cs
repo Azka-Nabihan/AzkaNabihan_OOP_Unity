@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -21,11 +23,9 @@ public class EnemySpawner : MonoBehaviour
 
     public bool isSpawning = false; // Status apakah spawner sedang aktif
 
-    private float timer = 0f; // Timer untuk mengatur interval spawn
-
     private void Start()
     {
-        // Pastikan prefab musuh diatur
+        // Pastikan prefab musuh diatur 
         if (spawnedEnemy == null)
         {
             Debug.LogError("Prefab musuh belum diatur pada EnemySpawner.");
@@ -35,74 +35,64 @@ public class EnemySpawner : MonoBehaviour
         spawnCount = defaultSpawnCount;
     }
 
-    private void Update()
+    public void StartSpawning()
+    {
+        if (!isSpawning && spawnedEnemy.level <= combatManager.waveNumber)
+            isSpawning = true; // Aktifkan mekanisme spawning
+            StartCoroutine(SpawnEnemies());
+            Debug.Log("Spawning dimulai.");
+        
+    }
+
+    public IEnumerator SpawnEnemies()
     {
         if (isSpawning)
         {
-            // Hitung waktu untuk mekanisme spawn interval
-            timer += Time.deltaTime;
-            if (timer >= spawnInterval)
-            {
-                timer = 0f;
-                SpawnEnemies(); // Panggil fungsi spawn
-            }
-        }
-    }
-
-    private void SpawnEnemies()
-    {
-        if (spawnedEnemy == null)
-        {
-            Debug.LogError("Prefab musuh belum diatur.");
-            return;
+            spawnCount = defaultSpawnCount;
         }
 
-        // Spawn musuh sebanyak spawnCount
         for (int i = 0; i < spawnCount; i++)
         {
-            // Tentukan lokasi spawn acak
-            float spawnX = Random.Range(-8f, 8f); // Sesuaikan dengan ukuran arena
-            float spawnY = Random.Range(-4f, 4f);
-            Vector3 spawnPosition = new Vector3(spawnX, spawnY, 0f);
-
-            // Spawn musuh
-            Instantiate(spawnedEnemy, spawnPosition, Quaternion.identity);
-            Debug.Log($"Musuh di-spawn di posisi {spawnPosition}");
+            if(spawnedEnemy != null)
+            {
+                Enemy enemy = Instantiate(spawnedEnemy);
+                enemy.GetComponent<Enemy>().combatManager = combatManager;
+                enemy.GetComponent<Enemy>().enemySpawner = this;
+                combatManager.totalEnemies++;
+                yield return new WaitForSeconds(spawnInterval);
+            }
         }
 
-        // Reset jumlah total kill dalam satu wave
-        totalKillWave = 0;
+        StopSpawning();
     }
 
-    public void OnEnemyKilled()
-    {
-        totalKill++; // Tambahkan total kill global
-        totalKillWave++; // Tambahkan total kill dalam wave ini
-
-        // Periksa apakah jumlah kill sudah cukup untuk meningkatkan spawn count
-        if (totalKillWave >= minimumKillsToIncreaseSpawnCount)
-        {
-            IncreaseSpawnCount();
-        }
-
-        Debug.Log($"Total kill: {totalKill}, Total kill wave: {totalKillWave}");
-    }
-
-    private void IncreaseSpawnCount()
-    {
-        spawnCount += multiplierIncreaseCount * spawnCountMultiplier; // Tingkatkan jumlah spawn
-        Debug.Log($"Jumlah musuh yang di-spawn meningkat menjadi {spawnCount}");
-    }
-
-    public void StartSpawning()
-    {
-        isSpawning = true; // Aktifkan mekanisme spawning
-        Debug.Log("Spawning dimulai.");
-    }
 
     public void StopSpawning()
     {
         isSpawning = false; // Matikan mekanisme spawning
+        StopAllCoroutines();
         Debug.Log("Spawning dihentikan.");
     }
+
+    public void OnEnemyKilled()
+    {
+        Debug.Log("Enemy Killed");
+
+        // call this method when an enemy is killed
+        totalKill++; // Tambahkan total kill global
+        totalKillWave++; // Tambahkan total kill dalam wave ini
+        Debug.Log(totalKillWave);
+
+        // Periksa apakah jumlah kill sudah cukup untuk meningkatkan spawn count
+        if (totalKillWave >= minimumKillsToIncreaseSpawnCount)
+        {
+            Debug.Log("Increase Spawn Count");
+            totalKillWave = 0; // Reset total kill wave
+            spawnCount = defaultSpawnCount + (spawnCountMultiplier * multiplierIncreaseCount);
+            multiplierIncreaseCount++;
+        }
+
+        Debug.Log($"Total kill: {totalKill}, Total kill wave: {totalKillWave}");
+    }
+    
 }

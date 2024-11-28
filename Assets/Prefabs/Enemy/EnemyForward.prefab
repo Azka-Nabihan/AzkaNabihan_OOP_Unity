@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: -8981964421160699817}
   m_Layer: 0
   m_Name: EnemyForward
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -119,7 +119,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.305}
@@ -175,6 +175,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: 1
+  enemySpawner: {fileID: 1758832289162568519, guid: 0c52014e67feb02418ea4ba6c1f143c3, type: 3}
+  combatManager: {fileID: 4309366341836603408, guid: 54f3556e56af1734dac1a2c83a7dab67, type: 3}
   speed: 3
 --- !u!114 &8603393771252518007
 MonoBehaviour:
@@ -188,7 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ba8b62650bece74cbd3f4c3e57a4209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 40
 --- !u!114 &3136047880483534113
 MonoBehaviour:
   m_ObjectHideFlags: 0

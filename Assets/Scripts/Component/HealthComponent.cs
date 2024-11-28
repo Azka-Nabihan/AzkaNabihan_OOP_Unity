@@ -9,16 +9,16 @@ public class HealthComponent : MonoBehaviour
     private int maxHealth = 10;  // Maksimal nilai health yang bisa diatur di Inspector
     private int health;  // Nilai health saat ini
 
+    private void Start()
+    {
+        // Inisialisasi nilai health dengan nilai maxHealth saat objek pertama kali diaktifkan
+        health = maxHealth;
+    }
+
     // Getter untuk mendapatkan nilai health saat ini
     public int GetHealth()
     {
         return health;
-    }
-
-    private void Awake()
-    {
-        // Inisialisasi nilai health dengan nilai maxHealth saat objek pertama kali diaktifkan
-        health = maxHealth;
     }
 
     // Method untuk mengurangi health
@@ -30,7 +30,7 @@ public class HealthComponent : MonoBehaviour
         if (health <= 0)
         {
             Destroy(gameObject);  // Hancurkan objek ini dari scene
-            Debug.Log(gameObject.name + " has been destroyed!");
         }
     }
+
 }

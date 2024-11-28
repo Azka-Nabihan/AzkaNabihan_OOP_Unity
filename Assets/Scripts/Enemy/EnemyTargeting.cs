@@ -1,9 +1,16 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class EnemyTargeting : Enemy
 {
     [Header("Movement Settings")]
     public float speed = 3f;  // Kecepatan pergerakan enemy
+    private Transform player;  // Referensi ke player
+
+    void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").transform;  // Cari player di scene
+    }
 
     private void Update()
     {

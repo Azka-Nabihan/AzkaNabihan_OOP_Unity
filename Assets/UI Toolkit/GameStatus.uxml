@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/GameUI.uss?fileID=7433441132597879392&amp;guid=18549561b2bb0fc4988bd5a78e1b4754&amp;type=3#GameUI" />
+    <ui:VisualElement style="flex-grow: 1; flex-direction: column-reverse; justify-content: flex-start; align-items: center;">
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1; align-items: flex-start; justify-content: flex-start; align-self: auto; flex-shrink: 1; width: 87px; top: -50%; right: 43%; flex-wrap: nowrap;">
+            <ui:Label tabindex="-1" text="Health: 100" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Health" class="Status" style="right: auto;" />
+            <ui:Label tabindex="-1" text="Point : 0" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Points" class="Status" style="right: auto;" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; right: -41%;">
+            <ui:Label tabindex="-1" text="Wave : 1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Wave" class="Status" />
+            <ui:Label tabindex="-1" text="Enemies Left : 0 " parse-escape-sequences="true" display-tooltip-when-elided="true" name="EnemiesLeft" class="Status" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -16,13 +16,14 @@ GameObject:
   - component: {fileID: 6745620144974112840}
   - component: {fileID: 3798517373292788811}
   - component: {fileID: -7452463867824093695}
+  - component: {fileID: -6517222466041484663}
   m_Layer: 0
   m_Name: EnemyTargeting
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2664487338723370670
 Transform:
   m_ObjectHideFlags: 0
@@ -119,7 +120,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.305}
@@ -187,7 +188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ba8b62650bece74cbd3f4c3e57a4209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 15
 --- !u!114 &3798517373292788811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,5 +215,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdea4931b24425242ad82f005dbd2b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: 2
+  level: 1
+  enemySpawner: {fileID: 1758832289162568519, guid: 0c52014e67feb02418ea4ba6c1f143c3, type: 3}
+  combatManager: {fileID: 4309366341836603408, guid: 54f3556e56af1734dac1a2c83a7dab67, type: 3}
   speed: 3
+--- !u!114 &-6517222466041484663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6886685706232068305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2bf3eeb7f6ee754e9398d604effa99b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blinkMaterial: {fileID: 2100000, guid: 4dc605f7374e4404bbc01c49f0483a8d, type: 2}
+  blinkingCount: 7
+  blinkInterval: 0.1
+  isInvincible: 0
