@@ -24,7 +24,9 @@ public class GameStatusUI : MonoBehaviour
         waveLabel = root.Q<Label>("Wave");
         enemiesLeftLabel = root.Q<Label>("EnemiesLeft");
 
+        // Mencari object player
         player = Player.Instance;
+        // Mencari object combat manager
         combatManager = FindAnyObjectByType<CombatManager>();
 
     }
